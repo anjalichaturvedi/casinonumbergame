@@ -17,6 +17,7 @@ private:
     string name;
     double balance;
 public:
+    Player() {}
     Player(string n, double b) {
         name = n;
         balance = b;
