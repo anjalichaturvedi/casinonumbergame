@@ -6,6 +6,7 @@
 using namespace std;
 
 struct Game {
+    public:
     int secretNumber;
     int tries;
     string playerName;
@@ -121,4 +122,64 @@ void playerLogin(Player players[], int& numPlayers) {
             }
      }
 }
+
+int main() {
+    const int MAX_PLAYERS = 10;
+    Player players[MAX_PLAYERS];
+    int numPlayers = 0;
+    Game games[10];
+    double drawMoney = 1000.0;
+
+    srand(time(NULL));
+
+    while (true) {
+        cout << "\nWhat would you like to do?\n";
+        cout << "1. Add player\n";
+        cout << "2. Remove player\n";
+        cout << "3. View past games\n";
+        cout << "4. Change draw money\n";
+        cout << "5. Player login\n";
+        cout << "6. Exit\n";
+        cout << "Enter your choice: ";
+
+        int choice;
+        cin >> choice;
+
+        switch (choice) {
+            case 1:
+                if (numPlayers < MAX_PLAYERS) {
+                    string name;
+                    double balance;
+                    cout << "Enter player name: ";
+                    cin >> name;
+                    cout << "Enter starting balance: $";
+                    cin >> balance;
+                    Player p(name, balance);
+                    players[numPlayers] = p;
+                    numPlayers++;
+                    cout << "Player added successfully.\n";
+                } else {
+                    cout << "Maximum number of players reached.\n";
+                }
+                break;
+            case 2:
+                removePlayer(players, numPlayers);
+                break;
+            case 3:
+                viewGames(games, 10);
+                break;
+            case 4:
+                changeDrawMoney(drawMoney);
+                break;
+            case 5:
+                playerLogin(players, numPlayers);
+                break;
+            case 6:
+                cout << "Exiting program...\n";
+                return 0;
+            default:
+                cout << "Invalid choice.\n";
+        }
+    }
 }
+
