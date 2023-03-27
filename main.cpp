@@ -1,172 +1,209 @@
 #include <iostream>
-#include <cstdlib>
-#include <ctime>
 #include <string>
+#include <cstdlib> // for random number generation
 
 using namespace std;
 
-struct Game {
-    int secretNumber;
-    int tries;
-    string playerName;
-};
-
-// admin class 
-class Admin {
-public:
-    void removePlayer(string players[], int& numPlayers);
-    void viewGames(Game games[], int numGames);
-    void changeDrawMoney(double& drawMoney);
-};
-
-void Admin::removePlayer(string players[], int& numPlayers) {
-    string playerToRemove;
-    cout << "Enter the name of the player to remove: ";
-    cin >> playerToRemove;
-
-    // Find and remove the player from the array
-    for (int i = 0; i < numPlayers; i++) {
-        if (players[i] == playerToRemove) {
-            for (int j = i; j < numPlayers - 1; j++) {
-                players[j] = players[j + 1];
-            }
-            numPlayers--;
-            cout << playerToRemove << " has been removed from the list of players.\n";
-            return;
-        }
-    }
-
-    cout << playerToRemove << " was not found in the list of players.\n";
-}
-
-void Admin::viewGames(Game games[], int numGames) {
-    cout << "Past games:\n";
-    for (int i = 0; i < numGames; i++) {
-        cout << "Player: " << games[i].playerName << ", Secret number: " << games[i].secretNumber
-             << ", Tries: " << games[i].tries << endl;
-    }
-}
-
-void Admin::changeDrawMoney(double& drawMoney) {
-    double newDrawMoney;
-    cout << "Enter the new draw money amount: $";
-    cin >> newDrawMoney;
-
-    if (newDrawMoney < 0) {
-        cout << "Error: Draw money cannot be negative.\n";
-    } else {
-        drawMoney = newDrawMoney;
-        cout << "Draw money has been changed to: $" << drawMoney << endl;
-    }
-}
-
-// player class
+// Player class
 class Player {
-private:
-    string name;
-    double balance;
-public:
-    Player() {}
-    Player(string n, double b) {
-        name = n;
-        balance = b;
-    }
-    string getName() {
-        return name;
-    }
-    double getBalance() {
-        return balance;
-    }
-    void deposit(double amount) {
-        balance += amount;
-        cout << "Deposit successful. New balance: $" << balance << endl;
-    }
-    void bet(double amount) {
-        if (balance < amount) {
-            cout << "Error: Insufficient balance.\n";
-        } else {
-            balance -= amount;
-            cout << "Bet successful. New balance: $" << balance << endl;
-        }
-    }
-    void playerLogin(Player players[], int& numPlayers) {
-    string playerName;
-    double balance;
-    cout << "Enter your name: ";
-    cin >> playerName;
-    cout << "Enter your starting balance: $";
-    cin >> balance;
-    Player p(playerName, balance);
-    players[numPlayers] = p;
-    numPlayers++;
-    cout << "Welcome, " << playerName << "! Your starting balance is $" << balance << endl;
-
-    while (true) {
-        cout << "What would you like to do?\n";
-        cout << "1. Deposit money\n";
-        cout << "2. Place a bet\n";
-        cout << "3. Check balance\n";
-        cout << "4. Exit\n";
-        cout << "Enter your choice: ";
-        int choice;
-        cin >> choice;
-
-        switch (choice) {
-            case 1:
-                double depositAmount;
-                cout << "Enter the amount to deposit: $";
-                cin >> depositAmount;
-                p.deposit(depositAmount);
-                break;
-            case 2:
-                double betAmount;
-                cout << "Enter the amount to bet: $";
-                cin >> betAmount;
-                p.bet(betAmount);
-                break;
-            case 3:
-                cout << "Available balance is: $" << p.getBalance();
-            }
-     }
-}
+   public: Player(const string & n, int d): name(n),
+   balance(d),
+   bet(0),
+   score(0) {}
+   const string & getName() const {
+      return name;
+   }
+   int getBalance() const {
+      return balance;
+   }
+   int getBet() const {
+      return bet;
+   }
+   int getScore() const {
+      return score;
+   }
+   void deposit(int amount) {
+      balance += amount;
+   }
+   bool withdraw(int amount) {
+      if (balance >= amount) {
+         balance -= amount;
+         return true;
+      } else {
+         return false;
+      }
+   }
+   void placeBet(int amount) {
+      bet = amount;
+   }
+   void resetBet() {
+      bet = 0;
+   }
+   void addScore(int points) {
+      score += points;
+   }
+   void resetScore() {
+      score = 0;
+   }
+   private: string name;
+   int balance;
+   int bet;
+   int score;
 };
 
-class Score {
-public:
-    void updateScoreboard(int scores[], string players[], string playerName, int tries) {
-    for (int i = 0; i < 10; i++) {
-        if (playerName == players[i]) {
-            if (tries < scores[i] || scores[i] == 0) {
-                scores[i] = tries;
-                cout << "New high score for " << playerName << ": " << tries << " tries!\n";
-            } else {
-                cout << "You did not beat your high score for " << playerName << ".\n";
-            }
-            return;
-        }
-    }
-    // If the player is not found in the scoreboard, add them to the bottom
-    for (int i = 0; i < 10; i++) {
-        if (players[i] == "") {
-            players[i] = playerName;
-            scores[i] = tries;
-            cout << "Added " << playerName << " to the scoreboard with " << tries << " tries.\n";
-            return;
-        }
-    }
-}
-
-void viewScoreboard(int scores[], string players[]) {
-    cout << "High Scores:\n";
-    for (int i = 0; i < 10; i++) {
-        if (players[i] != "") {
-            cout << i + 1 << ". " << players[i] << ": " << scores[i] << " tries\n";
-        }
-    }
-}
+// Admin class
+class Admin {
+   public: void removePlayer(Player & player) {
+      string name = player.getName();
+      player = Player("", 0);
+      cout << "Player " << name << " has been removed." << endl;
+   }
+   void viewGames(const Player & player) {
+      cout << "Scoreboard:" << endl;
+      cout << player.getName() << ": " << player.getScore() << endl;
+   }
+   void changeDrawMoney(int & drawMoney) {
+      int newAmount;
+      cout << "Enter new draw money amount: ";
+      cin >> newAmount;
+      drawMoney = newAmount;
+      cout << "Draw money has been changed to " << drawMoney << endl;
+   }
 };
 
+// Main function
 int main() {
-    return 0;
-}
+   Player player("", 0);
+   Admin admin;
+   int drawMoney = 100;
+   bool continuePlaying = true;
 
+   while (true) {
+      int choice;
+      cout << "Menu:" << endl;
+      cout << "1. Admin login" << endl;
+      cout << "2. Player login" << endl;
+      cout << "0. Quit" << endl;
+      cout << "Enter choice: ";
+      cin >> choice;
+
+      if (choice == 1) {
+         string password;
+         cout << "Enter password: ";
+         cin >> password;
+         if (password == "admin") {
+            int adminChoice;
+            cout << "Admin menu:" << endl;
+            cout << "1. Remove player" << endl;
+            cout << "2. View all past games" << endl;
+            cout << "3. Change draw money" << endl;
+            cout << "0. Exit" << endl;
+            cout << "Enter choice: ";
+            cin >> adminChoice;
+
+            switch (adminChoice) {
+            case 1:
+               admin.removePlayer(player);
+               break;
+            case 2:
+               admin.viewGames(player);
+               break;
+            case 3:
+               admin.changeDrawMoney(drawMoney);
+               break;
+            case 0:
+               break;
+            default:
+               cout << "Invalid choice." << endl;
+               break;
+            }
+         } else {
+            cout << "Incorrect Password." << endl;
+         }
+      } else if (choice == 2) {
+         string name;
+         int deposit;
+         cout << "Enter your name: ";
+         cin >> name;
+         cout << "Enter deposit amount: ";
+         cin >> deposit;
+         player = Player(name, deposit);
+         cout << "Welcome, " << name << ". Your balance is " << deposit;
+         int roundCount = 1;
+         while (true) {
+            int gameChoice;
+            cout << "Game menu:" << endl;
+            cout << "1. Play" << endl;
+            cout << "2. View balance" << endl;
+            cout << "3. Add deposit" << endl;
+            cout << "4. Reset bet" << endl;
+            cout << "0. Quit" << endl;
+            cout << "Enter choice: ";
+            cin >> gameChoice;
+
+            if (gameChoice == 1) {
+               int betAmount;
+               cout << "Enter bet amount: ";
+               cin >> betAmount;
+               if (player.withdraw(betAmount)) {
+                  player.placeBet(betAmount);
+                  int randomNumber = rand() % 10 + 1; // generate random number between 1 and 10
+                  int playerNumber;
+                  cout << "Enter a number between 1 and 10: ";
+                  cin >> playerNumber;
+
+                  if (playerNumber == randomNumber) {
+                     int winnings = betAmount * 10;
+                     player.deposit(winnings);
+                     player.addScore(winnings);
+                     cout << "Congratulations, you guessed the correct number! You won " << winnings << "." << endl;
+                  } else {
+                     int losses = betAmount;
+                     player.resetBet();
+                     player.addScore(-losses);
+                     cout << "Sorry, you guessed the wrong number. You lost " << losses << "." << endl;
+                  }
+
+                  int balance = player.getBalance();
+                  if (balance < drawMoney) {
+                     cout << "Insufficient balance to continue playing. Your final score is " << player.getScore() << "." << endl;
+                     break;
+                  }
+
+                  cout << "Your current balance is " << balance << ". Do you want to continue playing? (y/n): ";
+                  char continueChoice;
+                  cin >> continueChoice;
+                  if (continueChoice == 'n') {
+                     cout << "Thank you for playing. Your final score is " << player.getScore() << "." << endl;
+                     break;
+                  }
+
+                  roundCount++;
+               } else {
+                  cout << "Insufficient balance to place bet." << endl;
+               }
+            } else if (gameChoice == 2) {
+               cout << "Your balance is " << player.getBalance() << endl;
+            } else if (gameChoice == 3) {
+               int depositAmount;
+               cout << "Enter deposit amount: ";
+               cin >> depositAmount;
+               player.deposit(depositAmount);
+               cout << "Deposit successful. Your new balance is " << player.getBalance() << endl;
+            } else if (gameChoice == 4) {
+               player.resetBet();
+               cout << "Bet reset." << endl;
+            } else if (gameChoice == 0) {
+               break;
+            } else {
+               cout << "Invalid choice." << endl;
+            }
+         }
+      } else if (choice == 0) {
+         break;
+      } else {
+         cout << "Invalid choice." << endl;
+      }
+   }
+   return 0;
+}
