@@ -1,0 +1,4 @@
+Classes:
+- Game
+   - Admin 
+   - Players
