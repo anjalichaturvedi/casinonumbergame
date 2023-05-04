@@ -6,9 +6,9 @@ using namespace std;
 
 class Player {
 public:
-    Player(const string & n, int d):
+    Player(const string& n, int d) :
         name(n), balance(d), bet(0), score(0) {}
-    const string & getName() const {
+    const string& getName() const {
         return name;
     }
     int getBalance() const {
@@ -27,7 +27,8 @@ public:
         if (balance >= amount) {
             balance -= amount;
             return true;
-        } else {
+        }
+        else {
             return false;
         }
     }
@@ -35,7 +36,7 @@ public:
         bet = amount;
     }
     void resetBet() {
-         bet = 0;
+        bet = 0;
     }
     void addScore(int points) {
         score += points;
@@ -62,24 +63,38 @@ private:
     int score;
 };
 
-// Admin class
-class Admin {
-   public: void removePlayer(Player & player) {
-      string name = player.getName();
-      player = Player("", 0);
-      cout << "\n\t\t\t\t" << "Player " << name << " has been removed." << endl;
-   }
-   void viewGames(const Player & player) {
-      cout << "\n\t\t\t\t" << "Scoreboard:" << endl;
-      cout <<  "\n\t\t\t\t" << player.getName() << ": " << player.getScore() << endl;
-   }
-   void changeDrawMoney(int & drawMoney) {
-      int newAmount;
-      cout << "\n\t\t\t\t" << "Enter new draw money amount: ";
-      cin >> newAmount;
-      drawMoney = newAmount;
-      cout << "\n\t\t\t\t" << "Draw money has been changed to " << drawMoney << endl;
-   }
+// Base class for Admin
+class BaseAdmin {
+protected:
+    int drawMoney;
+public:
+    virtual void removePlayer(Player& player) = 0;
+    virtual void viewGames(const Player& player) = 0;
+    virtual void changeDrawMoney() = 0;
+};
+
+// Derived class for Admin
+class Admin : public BaseAdmin {
+public:
+    Admin() {
+        drawMoney = 100;
+    }
+    void removePlayer(Player& player) {
+        string name = player.getName();
+        player = Player("", 0);
+        cout << "\n\t\t\t\t" << "PLAYER " << name << " HAS BEEN REMOVED" << endl;
+    }
+    void viewGames(const Player& player) {
+        cout << "\n\t\t\t\t" << "SCOREBOARD:" << endl;
+        cout << "\n\t\t\t\t" << player.getName() << ": " << player.getScore() << endl;
+    }
+    void changeDrawMoney() {
+        int newAmount;
+        cout << "\n\t\t\t\t" << "ENTER NEW DRAW AMOUNT: ";
+        cin >> newAmount;
+        drawMoney = newAmount;
+        cout << "\n\t\t\t\t" << "DRAW MONEY HAS BEEN CHANGED TO" << drawMoney << endl;
+    }
 };
 
 // Main function
@@ -133,7 +148,7 @@ int main() {
                admin.viewGames(player);
                break;
             case 3:
-               admin.changeDrawMoney(drawMoney);
+               admin.changeDrawMoney();
                break;
             case 0:
                break;
