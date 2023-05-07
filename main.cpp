@@ -151,7 +151,7 @@ void savePlayerData(const Player& player) {
         file.close();
     }
     else {
-        cout << "Unable to save player data." << endl;
+        cout << "\n\t\t\t\t" << "UNABLE TO SAVE PLAYER DATA." << endl;
     }
 }
 
@@ -170,7 +170,7 @@ Player loadPlayerData() {
         return Player(name, balance);
     }
     else {
-        cout << "Unable to load player data. Starting with default values." << endl;
+        cout << "\n\t\t\t\t" << "UNABLE TO LOAD PLAYER DATA. STARTING WITH DEFAULT VALUES." << endl;
         // Return a default Player object if the file cannot be opened
         return Player("", 10);
     }
@@ -179,16 +179,23 @@ Player loadPlayerData() {
 
 // Main function
 int main() {
-     cout << "\n\t\t\t  **-**-**-**-**-**-**-**-**-**-**-**-**-**-**-**-**-**-**\n";
-    cout << "\n\t\t\t        =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=";
-    cout << "\n\t\t\t        =                                           =";
-    cout << "\n\t\t\t        =                    WELCOME                =";
-    cout << "\n\t\t\t        =                      TO                   =";
-    cout << "\n\t\t\t        =                 CASINO GAME               =";
-    cout << "\n\t\t\t        =                                           =";
-    cout << "\n\t\t\t        =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=";
-    cout << "\n\t\t\t  **-**-**-**-**-**-**-**-**-**-**-**-**-**-**-**-**-**-**\n";
-    cout << "\n\n\n\t\t\t Enter any key to continue.....";
+    cout << "\t\t\t" << "***************************************************\n\n";
+    cout << "\t\t\t\t\t" << "WELCOME TO CASINO\n";
+    cout << "\t\t\t\t" << "    _______   _______   _______\n";
+    cout << "\t\t\t\t" << "   |       | |       | |       |\n";
+    cout << "\t\t\t\t" << "   |   7   | |   7   | |   7   |\n";
+    cout << "\t\t\t\t" << "   |_______| |_______| |_______|\n";
+    cout << "\t\t\t\t" << "    _______   _______   _______\n";
+    cout << "\t\t\t\t" << "   |       | |       | |       |\n";
+    cout << "\t\t\t\t" <<"   |   7   | |   7   | |   7   |\n";
+    cout << "\t\t\t\t" << "   |_______| |_______| |_______|\n";
+    cout << "\t\t\t\t" <<"    _______   _______   _______\n";
+    cout << "\t\t\t\t" << "   |       | |       | |       |\n";
+    cout << "\t\t\t\t" << "   |   7   | |   7   | |   7   |\n";
+    cout << "\t\t\t\t" << "   |_______| |_______| |_______|\n";
+    cout << "\n\n\t\t\t Enter any key to continue.....\n\n";
+    cout << "\t\t\t" << "***************************************************\n";
+
     getchar();
 
     Player player = loadPlayerData(); // Load player data from file
@@ -353,9 +360,9 @@ int main() {
         // Create new player account
         string name;
         int balance;
-        cout << "\n\t\t\t" << "Enter your name: ";
+        cout << "\n\t\t\t\t" << "ENTER YOUR NAME: ";
         cin >> name;
-        cout << "\n\t\t\t" << "Enter starting balance: ";
+        cout << "\n\t\t\t\t" << "ENTER STARTING BALANCE: ";
         cin >> balance;
         Player newPlayer(name, balance);
         savePlayerData(newPlayer);
