@@ -85,6 +85,7 @@ public:
     virtual void removePlayer(Player& player) = 0;
     virtual void viewGames(const Player& player) = 0;
     virtual void changeDrawMoney() = 0;
+    virtual void viewScoreboard() = 0;
 };
 
 // Derived class for Admin
@@ -100,10 +101,11 @@ public:
         cout << "\n\t\t\t\t" << "PLAYER " << name << " HAS BEEN REMOVED" << endl;
     }
 
-    void viewGames(const Player& player) {
-        cout << "\n\t\t\t\t" << "SCOREBOARD:" << endl;
-        cout << "\n\t\t\t\t" << player.getName() << ": " << player.getScore() << endl;
-    }
+   void viewGames(const Player& player) {
+    viewScoreboard();
+    cout << "\n\t\t\t\t" << player.getName() << ": " << player.getScore() << endl;
+}
+
 
     void changeDrawMoney() {
         int newAmount;
@@ -112,11 +114,38 @@ public:
         drawMoney = newAmount;
         cout << "\n\t\t\t\t" << "DRAW MONEY HAS BEEN CHANGED TO " << drawMoney << endl;
     }
+
+
+
+
+    void viewScoreboard() {
+    ifstream file("scoreboard.txt");
+    if (file.is_open()) {
+        cout << "\n\t\t\t\t" << "SCOREBOARD:" << endl;
+        string line;
+        while (getline(file, line)) {
+            size_t pos = line.find(",");
+            if (pos != string::npos) {
+                string name = line.substr(0, pos);
+                string scoreStr = line.substr(pos + 1);
+                int score = stoi(scoreStr);
+                cout << "\n\t\t\t\t" << name << ": " << score << endl;
+            }
+        }
+
+
+        file.close();
+    }
+    else {
+        cout << "\n\t\t\t\t" << "UNABLE TO LOAD SCOREBOARD DATA" << endl;
+    }
+}
+
 };
 
 // Function to save player data to a file
 void savePlayerData(const Player& player) {
-    ofstream file("player_data.txt", ios::app); // open the file in append mode
+    ofstream file("player_data.txt", ios::trunc); // open the file in truncation mode
     if (file.is_open()) {
         file << player.getName() << " " << player.getBalance() << " " << player.getScore() << endl;
         file.close();
@@ -125,6 +154,7 @@ void savePlayerData(const Player& player) {
         cout << "Unable to save player data." << endl;
     }
 }
+
 
 // Function to load player data from a file
 Player loadPlayerData() {
@@ -146,9 +176,10 @@ Player loadPlayerData() {
     }
 }
 
+
 // Main function
 int main() {
-    cout << "\n\t\t\t  *------------------*\n";
+     cout << "\n\t\t\t  **-**-**-**-**-**-**-**-**-**-**-**-**-**-**-**-**-**-**\n";
     cout << "\n\t\t\t        =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=";
     cout << "\n\t\t\t        =                                           =";
     cout << "\n\t\t\t        =                    WELCOME                =";
@@ -156,7 +187,7 @@ int main() {
     cout << "\n\t\t\t        =                 CASINO GAME               =";
     cout << "\n\t\t\t        =                                           =";
     cout << "\n\t\t\t        =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=";
-    cout << "\n\t\t\t  *------------------*\n";
+    cout << "\n\t\t\t  **-**-**-**-**-**-**-**-**-**-**-**-**-**-**-**-**-**-**\n";
     cout << "\n\n\n\t\t\t Enter any key to continue.....";
     getchar();
 
@@ -171,6 +202,7 @@ int main() {
         cout << "\n\t\t\t\t" << "MENU" << endl;
         cout << "\n\t\t\t\t" << "1. ADMIN LOGIN" << endl;
         cout << "\n\t\t\t\t" << "2. PLAYER LOGIN" << endl;
+        cout << "\n\t\t\t\t" << "3. CREATE NEW PLAYER ACCOUNT" << endl;
         cout << "\n\t\t\t\t" << "0. QUIT" << endl;
         cout << "\n\t\t\t\t" << "ENTER CHOICE: ";
         cin >> choice;
@@ -184,7 +216,7 @@ int main() {
                 cout << "\n\t\t\t" << "=======================================================" << endl;
                 cout << "\n\t\t\t\t" << "ADMIN MENU" << endl;
                 cout << "\n\t\t\t\t" << "1. REMOVE PLAYER" << endl;
-                cout << "\n\t\t\t\t" << "2. VIEW ALL PLAYERS" << endl;
+                cout << "\n\t\t\t\t" << "2. VIEW ALL GAMES" << endl;
                 cout << "\n\t\t\t\t" << "3. CHANGE DRAW MONEY" << endl;
                 cout << "\n\t\t\t\t" << "0. EXIT" << endl;
                 cout << "\n\t\t\t\t" << "ENTER CHOICE: ";
@@ -196,7 +228,8 @@ int main() {
                     admin.removePlayer(player);
                     break;
                 case 2:
-                    admin.viewGames(player);
+                 admin.viewGames(player);
+    break;
                     break;
                 case 3:
                     admin.changeDrawMoney();
@@ -316,6 +349,18 @@ int main() {
                 }
             }
         }
+        else if (choice == 3) {
+        // Create new player account
+        string name;
+        int balance;
+        cout << "\n\t\t\t" << "Enter your name: ";
+        cin >> name;
+        cout << "\n\t\t\t" << "Enter starting balance: ";
+        cin >> balance;
+        Player newPlayer(name, balance);
+        savePlayerData(newPlayer);
+        player = newPlayer;
+    }
         else if (choice == 0) {
             break;
         }
@@ -324,7 +369,6 @@ int main() {
         }
     }
 
-    // Read and display the scoreboard data from the file
     ifstream file("scoreboard.txt");
     if (file.is_open()) {
         cout << "\n\t\t\t\t" << "SCOREBOARD:" << endl;
@@ -343,6 +387,5 @@ int main() {
     else {
         cout << "\n\t\t\t\t" << "UNABLE TO LOAD SCOREBOARD DATA" << endl;
     }
-
     return 0;
 }
