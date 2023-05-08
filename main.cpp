@@ -195,23 +195,22 @@ int main() {
 
 
 
-  cout << "\n\t\t\t" << "\033[1;34m***************************************************\n\n";
-cout << "\t\t\t\t\t" << "\033[1;34mWELCOME TO CASINO\n";
-
-cout << "\t\t\t\t" << "\033[1;34m    _______   _______   _______\n";
-cout << "\t\t\t\t" << "\033[1;34m   |       | |       | |       |\n";
-cout << "\t\t\t\t" << "\033[1;34m   |   7   | |   7   | |   7   |\n";
-cout << "\t\t\t\t" << "\033[1;34m   |_______| |_______| |_______|\n";
-cout << "\t\t\t\t" << "\033[1;34m    _______   _______   _______\n";
-cout << "\t\t\t\t" << "\033[1;34m   |       | |       | |       |\n";
-cout << "\t\t\t\t" << "\033[1;34m   |   7   | |   7   | |   7   |\n";
-cout << "\t\t\t\t" << "\033[1;34m   |_______| |_______| |_______|\n";
-cout << "\t\t\t\t" << "\033[1;34m    _______   _______   _______\n";
-cout << "\t\t\t\t" << "\033[1;34m   |       | |       | |       |\n";
-cout << "\t\t\t\t" << "\033[1;34m   |   7   | |   7   | |   7   |\n";
-cout << "\t\t\t\t" << "\033[1;34m   |_______| |_______| |_______|\n";
-cout << "\n\n\t\t\t Enter any key to continue.....\n\n";
-cout << "\t\t\t" << "\033[1;34m***************************************************\n";
+    cout << "\n\t\t\t" << "\033[1;34m***************************************************\n\n";
+    cout << "\t\t\t\t\t" << "\033[1;34mWELCOME TO CASINO\n";
+    cout << "\t\t\t\t" << "\033[1;34m    _______   _______   _______\n";
+    cout << "\t\t\t\t" << "\033[1;34m   |       | |       | |       |\n";
+    cout << "\t\t\t\t" << "\033[1;34m   |   7   | |   7   | |   7   |\n";
+    cout << "\t\t\t\t" << "\033[1;34m   |_______| |_______| |_______|\n";
+    cout << "\t\t\t\t" << "\033[1;34m    _______   _______   _______\n";
+    cout << "\t\t\t\t" << "\033[1;34m   |       | |       | |       |\n";
+    cout << "\t\t\t\t" << "\033[1;34m   |   7   | |   7   | |   7   |\n";
+    cout << "\t\t\t\t" << "\033[1;34m   |_______| |_______| |_______|\n";
+    cout << "\t\t\t\t" << "\033[1;34m    _______   _______   _______\n";
+    cout << "\t\t\t\t" << "\033[1;34m   |       | |       | |       |\n";
+    cout << "\t\t\t\t" << "\033[1;34m   |   7   | |   7   | |   7   |\n";
+    cout << "\t\t\t\t" << "\033[1;34m   |_______| |_______| |_______|\n";
+    cout << "\n\n\t\t\t Enter any key to continue.....\n\n";
+    cout << "\t\t\t" << "\033[1;34m***************************************************\n";
 
 
 
@@ -256,7 +255,6 @@ cout << "\t\t\t" << "\033[1;34m*************************************************
                     break;
                 case 2:
                  admin.viewGames(player);
-    break;
                     break;
                 case 3:
                     admin.changeDrawMoney();
@@ -272,8 +270,8 @@ cout << "\t\t\t" << "\033[1;34m*************************************************
                 cout << "\n\t\t\t\t" << "\033[1;33mINCORRECT PASSWORD" << endl;
             }
         }
-        else if (choice == 2) {
-            if (player.getName() == "") {
+            else if (choice == 2) {
+                if (player.getName() == "") {
                 string name;
                 int deposit;
                 cout << "\n\t\t\t\t" << "\033[1;33mENTER YOUR NAME: ";
@@ -409,24 +407,24 @@ cout << "\t\t\t" << "\033[1;34m*************************************************
         }
     }
 
-   ifstream file("scoreboard.txt");
-if (file.is_open()) {
-    cout << "\n\t\t\t\t" << "\033[1;33mSCOREBOARD:" << endl;
-    string line;
-    while (getline(file, line)) {
-        size_t pos = line.find(",");
-        if (pos != string::npos) {
-            string name = line.substr(0, pos);
-            string scoreStr = line.substr(pos + 1);
-            int score = stoi(scoreStr);
-            cout << "\n\t\t\t\t" << name << ": \033[1;33m" << score << endl;
+        ifstream file("scoreboard.txt");
+                   if (file.is_open()) {
+                      cout << "\n\t\t\t\t" << "\033[1;33mSCOREBOARD:" << endl;
+                      string line;
+                      while (getline(file, line)) {
+                      size_t pos = line.find(",");
+                      if (pos != string::npos) {
+                      string name = line.substr(0, pos);
+                      string scoreStr = line.substr(pos + 1);
+                      int score = stoi(scoreStr);
+                      cout << "\n\t\t\t\t" << name << ": \033[1;33m" << score << endl;
         }
     }
-    file.close();
+                      file.close();
 }
 
-    else {
-        cout << "\n\t\t\t\t" << "UNABLE TO LOAD SCOREBOARD DATA" << endl;
+                 else {
+                   cout << "\n\t\t\t\t" << "UNABLE TO LOAD SCOREBOARD DATA" << endl;
     }
     return 0;
 }
