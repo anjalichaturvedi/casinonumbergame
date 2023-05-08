@@ -98,7 +98,7 @@ public:
     void removePlayer(Player& player) {
         string name = player.getName();
         player = Player("", 0);
-        cout << "\n\t\t\t\t" << "PLAYER " << name << " HAS BEEN REMOVED" << endl;
+        cout << "\n\t\t\t\t" << "\033[1;33mPLAYER " << name << " \033[1;33mHAS BEEN REMOVED" << endl;
     }
 
    void viewGames(const Player& player) {
@@ -109,10 +109,10 @@ public:
 
     void changeDrawMoney() {
         int newAmount;
-        cout << "\n\t\t\t\t" << "ENTER NEW DRAW AMOUNT: ";
+        cout << "\n\t\t\t\t" << "\033[1;33mENTER NEW DRAW AMOUNT: ";
         cin >> newAmount;
         drawMoney = newAmount;
-        cout << "\n\t\t\t\t" << "DRAW MONEY HAS BEEN CHANGED TO " << drawMoney << endl;
+        cout << "\n\t\t\t\t" << "\033[1;33mDRAW MONEY HAS BEEN CHANGED TO " << drawMoney << endl;
     }
 
 
@@ -121,7 +121,7 @@ public:
     void viewScoreboard() {
     ifstream file("scoreboard.txt");
     if (file.is_open()) {
-        cout << "\n\t\t\t\t" << "SCOREBOARD:" << endl;
+        cout << "\n\t\t\t\t" << "\033[1;33mSCOREBOARD:" << endl;
         string line;
         while (getline(file, line)) {
             size_t pos = line.find(",");
@@ -137,7 +137,7 @@ public:
         file.close();
     }
     else {
-        cout << "\n\t\t\t\t" << "UNABLE TO LOAD SCOREBOARD DATA" << endl;
+        cout << "\n\t\t\t\t" << "\033[1;33mUNABLE TO LOAD SCOREBOARD DATA" << endl;
     }
 }
 
@@ -151,7 +151,7 @@ void savePlayerData(const Player& player) {
         file.close();
     }
     else {
-        cout << "\n\t\t\t\t" << "UNABLE TO SAVE PLAYER DATA." << endl;
+        cout << "\n\t\t\t\t" << "\033[1;33mUNABLE TO SAVE PLAYER DATA." << endl;
     }
 }
 
@@ -170,7 +170,7 @@ Player loadPlayerData() {
         return Player(name, balance);
     }
     else {
-        cout << "\n\t\t\t\t" << "UNABLE TO LOAD PLAYER DATA. STARTING WITH DEFAULT VALUES." << endl;
+        cout << "\n\t\t\t\t" << "\033[1;33mUNABLE TO LOAD PLAYER DATA. STARTING WITH DEFAULT VALUES." << endl;
         // Return a default Player object if the file cannot be opened
         return Player("", 10);
     }
@@ -223,7 +223,7 @@ int main() {
 
     while (true) {
         int choice;
-        cout << "\n\t\t\t" << "=======================================================" << endl;
+        cout << "\n\t\t\t" << "\033[1;34m=======================================================" << endl;
         cout << "\n\t\t\t\t" << "MENU" << endl;
         printMenuOption("ADMIN LOGIN", 1);
         printMenuOption("PLAYER LOGIN", 2);
@@ -231,7 +231,7 @@ int main() {
         printMenuOption("QUIT", 0);
 
         cin >> choice;
-        cout << "\n\t\t\t" << "=======================================================" << endl;
+        cout << "\n\t\t\t" << "\033[1;34m=======================================================" << endl;
         if (choice == 1) {
             string password;
             cout << "\n\t\t\t\t" << "ENTER PASSWORD: ";
